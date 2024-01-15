@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="CloudinaryDotNet" Version="1.25.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BillingAssistant.Core\BillingAssistant.Core.csproj" />
+    <ProjectReference Include="..\BillingAssistant.DataAccess\BillingAssistant.DataAccess.csproj" />
+    <ProjectReference Include="..\BillingAssistant.EmailService\BillingAssistant.EmailService.csproj" />
+    <ProjectReference Include="..\BillingAssistant.Entities\BillingAssistant.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
