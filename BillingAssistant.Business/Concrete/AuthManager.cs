@@ -94,16 +94,12 @@ namespace BillingAssistant.Business.Concrete
 
             if (!userToCheck.Verified && userForVerifiedDto.Verified)
             {
-                //userToCheck.FirstName = userForVerifiedDto.FirstName;
-                //userToCheck.LastName = userForVerifiedDto.LastName;
                 userToCheck.Verified = userForVerifiedDto.Verified;
 
                 var userVerificationUpdate = await _userRepository.UpdateAsync(userToCheck);
 
                 var resultUpdateDto = new UserForVerifiedDto
                 {
-                    //FirstName = userToCheck.FirstName,
-                    //LastName = userToCheck.LastName,
                     Email = userToCheck.Email,
                     Verified = userToCheck.Verified
                 };
@@ -113,7 +109,27 @@ namespace BillingAssistant.Business.Concrete
 
             return new ErrorDataResult<UserForVerifiedDto>(null, Messages.VerificationFailed);
         }
+        public async Task<IDataResult<UserForVerifiedDto>> GetUserVerificationStatus(string userEmail)
+        {
+            if (string.IsNullOrWhiteSpace(userEmail))
+            {
+                return new ErrorDataResult<UserForVerifiedDto>(null, Messages.InvalidData);
+            }
 
+            var userToCheck = await _userRepository.GetAsync(x => x.Email == userEmail);
 
+            if (userToCheck == null)
+            {
+                return new ErrorDataResult<UserForVerifiedDto>(null, Messages.UserNotFound);
+            }
+
+            var resultDto = new UserForVerifiedDto
+            {
+                Email = userToCheck.Email,
+                Verified = userToCheck.Verified
+            };
+
+            return new SuccessDataResult<UserForVerifiedDto>(resultDto, Messages.VerificationStatusRetrieved);
+        }
     }
 }

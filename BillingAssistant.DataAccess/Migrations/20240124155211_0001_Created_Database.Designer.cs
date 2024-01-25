@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BillingAssistant.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240115215827_0001_Created_Database")]
+    [Migration("20240124155211_0001_Created_Database")]
     partial class _0001_Created_Database
     {
         /// <inheritdoc />

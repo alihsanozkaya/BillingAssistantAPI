@@ -11,7 +11,6 @@ namespace BillingAssistant.WebAPI.Controllers
     public class AuthsController : ControllerBase
     {
         private IAuthService _authService;
-
         private IEmailSender _emailSender;
         private IUserService _userService;
         public AuthsController(IAuthService authService, IEmailSender emailSender, IUserService userService)
@@ -67,6 +66,18 @@ namespace BillingAssistant.WebAPI.Controllers
             var message = new Message(new string[] { email }, "Doğrulama maili", "http://localhost:3000/verified/" + email);
             await _emailSender.SendEmailAsync(message);
             return Ok();
+        }
+        [HttpGet("verificationStatus")]
+        public async Task<IActionResult> GetUserVerificationStatus(string email)
+        {
+            var result = await _authService.GetUserVerificationStatus(email);
+
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
         }
     }
 }

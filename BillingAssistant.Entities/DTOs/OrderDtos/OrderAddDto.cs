@@ -13,6 +13,6 @@ namespace BillingAssistant.Entities.DTOs.OrderDtos
         public int ProductId { get; set; }
         public int Quantity { get; set; }
 
-        public IFormFile Image { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

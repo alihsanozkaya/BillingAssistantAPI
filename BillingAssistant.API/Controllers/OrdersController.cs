@@ -38,7 +38,7 @@ namespace BillingAssistant.WebAPI.Controllers
         }
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> CreateOrder([FromForm] OrderAddDto orderAddDto)
+        public async Task<IActionResult> CreateOrder([FromBody] OrderAddDto orderAddDto)
         {
             var result = await _orderService.AddAsync(orderAddDto);
             if (result != null)

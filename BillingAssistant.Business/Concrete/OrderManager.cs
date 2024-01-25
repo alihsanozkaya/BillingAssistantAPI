@@ -33,8 +33,7 @@ namespace BillingAssistant.Business.Concrete
         public async Task<IResult> AddAsync(OrderAddDto entity)
         {
             var newOrder = _mapper.Map<Order>(entity);
-            var imageUrl = await UploadImageAsync(entity.Image);
-            newOrder.ImageUrl = imageUrl;
+            
             await _orderRepository.AddAsync(newOrder);
             return new SuccessResult(Messages.Added);
         }

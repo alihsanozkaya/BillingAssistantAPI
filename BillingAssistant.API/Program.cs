@@ -71,8 +71,6 @@ builder.Host.ConfigureServices((hostContext, services) =>
     services.AddTransient<IOrderService, OrderManager>();
     services.AddTransient<IOrderRepository, OrderRepository>();
 
-
-
     services.AddTransient<ICloudinaryService, CloudinaryManager>();
 });
 

@@ -17,9 +17,10 @@ namespace BillingAssistant.Entities.DTOs.AuthDtos
         [EmailAddress]
         [Required(ErrorMessage = "E-mail girilmesi zorunludur")]
         public string Email { get; set; }
-        [MinLength(6)]
+        [MinLength(6, ErrorMessage = "Şifre en az 6 karakter olmalıdır")]
         [Required(ErrorMessage = "Şifre girilmesi zorunludur")]
         public string Password { get; set; }
+        [MinLength(6, ErrorMessage = "Şifre en az 6 karakter olmalıdır")]
         [Compare("Password", ErrorMessage = "Şifreler birbirleriyle eşleşmemektedir")]
         [Required(ErrorMessage = "Tekrardan şifre girilmesi zorunludur")]
         public string ConfirmPassword { get; set; }

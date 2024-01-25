@@ -29,5 +29,9 @@ namespace BillingAssistant.Business.Constants
         public static string VerificationFailed = "Doğrulama yapılamadı";
         public static string InvalidData = "Geçersiz veri";
         public static string UserAlreadyVerified = "Kullanıcı zaten doğrulandı";
+
+        public static string UserNotActive = "Kullanıcı doğrulanmamış";
+        
+        public static string VerificationStatusRetrieved = "Doğrulama Durumu Alındı";
     }
 }
