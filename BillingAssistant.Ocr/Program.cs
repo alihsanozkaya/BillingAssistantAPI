@@ -7,12 +7,12 @@ IronTesseract ocr = new();
 ocr.Language = OcrLanguage.English;
 ocr.AddSecondaryLanguage(OcrLanguage.Turkish);
 
-using (var input = new OcrInput(@"C:\Users\Ali\source\repos\BillingAssistant.Ocr\samsungFatura.pdf"))
+using (var input = new OcrInput(@"C:\Users\alihs\Desktop\Yazilim\Asp.Net\BillingAssistant\BillingAssistant.Ocr\samsungFatura.pdf"))
 {
     var Result = ocr.Read(input);
     try
     {
-        Result.SaveAsTextFile(@"C:\Users\Ali\source\repos\BillingAssistant.Ocr\Text.txt");
+        Result.SaveAsTextFile(@"C:\Users\alihs\Desktop\Yazilim\Asp.Net\BillingAssistant\BillingAssistant.Ocr\Text.txt");
         for (int i = 0; i < Result.Words.Length; i++)
         {
             if (Result.Words[i].Text.ToLower() == "tutar")
@@ -21,7 +21,7 @@ using (var input = new OcrInput(@"C:\Users\Ali\source\repos\BillingAssistant.Ocr
 
             }
         }
-        //Console.WriteLine(Result.Text);
+        Console.WriteLine(Result.Text);
 
     }
     catch (Exception ex)
