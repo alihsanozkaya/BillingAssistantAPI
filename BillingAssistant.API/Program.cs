@@ -71,6 +71,8 @@ builder.Host.ConfigureServices((hostContext, services) =>
     services.AddTransient<IOrderService, OrderManager>();
     services.AddTransient<IOrderRepository, OrderRepository>();
 
+    services.AddTransient<IOcrService, OcrManager>();
+
     services.AddTransient<ICloudinaryService, CloudinaryManager>();
 });
 
@@ -82,6 +84,17 @@ builder.Services.AddSingleton(emailConfig);
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddControllers();
+
+
+
+
+
+//builder.Services.AddDependencies(builder.Configuration);
+
+
+
+
+
 
 builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder =>

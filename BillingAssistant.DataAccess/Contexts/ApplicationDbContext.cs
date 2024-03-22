@@ -13,7 +13,7 @@ namespace BillingAssistant.DataAccess.Concrete.Contexts
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=BillingAsistant;User Id=postgres;Password=123456;");
+            optionsBuilder.UseNpgsql("Server=localhost;Database=billingassistantdb;Port=5432;User Id=postgres;Password=1234;");
         }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<User> Users { get; set; }

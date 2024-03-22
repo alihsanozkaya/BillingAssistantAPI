@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BillingAssistant.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class _0001_Created_Database : Migration
+    public partial class _0001_Create_Database : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
