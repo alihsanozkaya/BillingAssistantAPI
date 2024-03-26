@@ -50,6 +50,16 @@ namespace BillingAssistant.WebAPI.Controllers
             }
             return BadRequest(result.Message);
         }
+        [HttpPut("updateProfile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UserForUpdateProfileDto userForUpdateProfileDto)
+        {
+            var result = await _authService.UpdateProfile(userForUpdateProfileDto);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
         [HttpPut("verification")]
         public async Task<IActionResult> Verification([FromBody] UserForVerifiedDto userForVerifiedDto)
         {

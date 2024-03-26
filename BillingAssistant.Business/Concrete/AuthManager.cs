@@ -109,6 +109,48 @@ namespace BillingAssistant.Business.Concrete
 
             return new ErrorDataResult<UserForVerifiedDto>(null, Messages.VerificationFailed);
         }
+        public async Task<IDataResult<UserForUpdateProfileDto>> UpdateProfile(UserForUpdateProfileDto userForUpdateProfileDto)
+        {
+            if (userForUpdateProfileDto == null)
+            {
+                return new ErrorDataResult<UserForUpdateProfileDto>(null, Messages.InvalidData);
+            }
+
+            var userToCheck = await _userRepository.GetAsync(x => x.Id == userForUpdateProfileDto.Id);
+
+            if (userToCheck == null)
+            {
+                return new ErrorDataResult<UserForUpdateProfileDto>(null, Messages.UserNotFound);
+            }
+
+            if (userToCheck.FirstName == userForUpdateProfileDto.FirstName &&
+                userToCheck.LastName == userForUpdateProfileDto.LastName &&
+                userToCheck.Email == userForUpdateProfileDto.Email)
+            {
+                return new ErrorDataResult<UserForUpdateProfileDto>(null, Messages.NothingToUpdate);
+            }
+            userToCheck.FirstName = userForUpdateProfileDto.FirstName;
+            userToCheck.LastName = userForUpdateProfileDto.LastName;
+            userToCheck.Email = userForUpdateProfileDto.Email;
+
+            var updatedUser = await _userRepository.UpdateAsync(userToCheck);
+
+            if (updatedUser != null)
+            {
+                var updatedUserDto = new UserForUpdateProfileDto
+                {
+                    Id = updatedUser.Id,
+                    FirstName = updatedUser.FirstName,
+                    LastName = updatedUser.LastName,
+                    Email = updatedUser.Email,
+                };
+                return new SuccessDataResult<UserForUpdateProfileDto>(updatedUserDto, Messages.UpdatedProfile);
+            }
+            else
+            {
+                return new ErrorDataResult<UserForUpdateProfileDto>(null, Messages.UpdateProfileFailed);
+            }
+        }
         public async Task<IDataResult<UserForVerifiedDto>> GetUserVerificationStatus(string userEmail)
         {
             if (string.IsNullOrWhiteSpace(userEmail))
