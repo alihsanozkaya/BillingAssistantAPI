@@ -11,6 +11,7 @@ using BillingAssistant.EmailService;
 using Core.Utilities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -26,6 +27,8 @@ var mapperConfig = new MapperConfiguration(mc =>
     mc.AddProfile(new StoreProfile());
     mc.AddProfile(new ProductProfile());
     mc.AddProfile(new OrderProfile());
+    mc.AddProfile(new UserProfile());
+    mc.AddProfile(new InvoiceProfile());
 });
 var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
@@ -72,9 +75,16 @@ builder.Host.ConfigureServices((hostContext, services) =>
     services.AddTransient<IOrderRepository, OrderRepository>();
 
     services.AddTransient<IOcrService, OcrManager>();
+    services.AddTransient<IPaymentService, PaymentManager>();
+
+    services.AddTransient<IInvoiceService, InvoiceManager>();
+    services.AddTransient<IInvoiceRepository, InvoiceRepository>();
 
     services.AddTransient<ICloudinaryService, CloudinaryManager>();
 });
+#region stripe
+StripeConfiguration.ApiKey = configuration.GetSection("Stripe").GetValue<string>("SecretKey");
+#endregion
 
 var emailConfig = builder.Configuration
         .GetSection("EmailConfiguration")

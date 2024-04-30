@@ -49,15 +49,12 @@ namespace BillingAssistant.Business.Concrete
                 var uploadParams = new ImageUploadParams
                 {
                     File = new FileDescription(file.FileName, stream),
-                    Transformation = new Transformation().Crop("fill").Width(800).Height(600)
+                    Transformation = new Transformation().Crop("fill").Width(496).Height(711)
                 };
 
                 var uploadResult = await _cloudinary.UploadAsync(uploadParams);
                 return uploadResult;
             }
-
-
         }
-
     }
 }

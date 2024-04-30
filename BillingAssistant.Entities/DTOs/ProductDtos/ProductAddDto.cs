@@ -10,9 +10,9 @@ namespace BillingAssistant.Entities.DTOs.ProductDtos
 {
     public class ProductAddDto : IDto
     {
-        public int CategoryId { get; set; }
-        public int StoreId { get; set; }
-        public string ProductName { get; set; }
+        public int InvoiceId { get; set; }
+        public string Name { get; set; }
+        public int Unit { get; set; }
         public double Price { get; set; }
     }
 }

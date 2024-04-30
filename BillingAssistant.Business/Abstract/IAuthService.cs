@@ -22,5 +22,8 @@ namespace BillingAssistant.Business.Abstract
         IDataResult<AccessToken> CreateAccessToken(User user);
         Task<IDataResult<UserForVerifiedDto>> Verification(UserForVerifiedDto userForVerifiedDto);
         Task<IDataResult<UserForVerifiedDto>> GetUserVerificationStatus(string userEmail);
+
+        Task<IDataResult<UserDto>> GetUserProfile(int id);
+             
     }
 }

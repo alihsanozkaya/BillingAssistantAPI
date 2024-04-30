@@ -37,5 +37,9 @@ namespace BillingAssistant.Business.Constants
         public static string UserNotActive = "Kullanıcı doğrulanmamış";
         
         public static string VerificationStatusRetrieved = "Doğrulama Durumu Alındı";
+        public static string Payed = "Başarılı şekilde ödeme alındı";
+
+        public static string PremiumMembershipActivated = "Premium Üyelik aktif edildi";
+        public static string PremiumMembershipNotActivated = "Premium Üyelik aktif edilemedi";
     }
 }

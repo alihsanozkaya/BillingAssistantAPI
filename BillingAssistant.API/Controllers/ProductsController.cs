@@ -2,6 +2,7 @@
 using BillingAssistant.Entities.DTOs.ProductDtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 
 namespace BillingAssistant.WebAPI.Controllers
 {
@@ -13,6 +14,18 @@ namespace BillingAssistant.WebAPI.Controllers
         public ProductsController(IProductService productService)
         {
             _productService = productService;
+        }
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> AddProductFromOCR(string file)
+        {
+            if (file == null || file.Length <= 0)
+            {
+                return BadRequest("File is empty");
+            }
+
+            var result = await _productService.AddProductFromOCR(file);
+            return BadRequest(result.Message);
         }
         [HttpGet]
         [Route("[action]")]

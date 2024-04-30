@@ -9,11 +9,10 @@ namespace BillingAssistant.Entities.Concrete
 {
     public class Product : AuditableEntity
     {
-        public int CategoryId { get; set; }
-        public virtual Category Category { get; set; }
-        public int StoreId { get; set; }
-        public virtual Store Store { get; set; }
-        public string ProductName { get; set; }
+        public int InvoiceId { get; set; }
+        public virtual Invoice Invoice { get; set; }
+        public string Name { get; set; }
+        public int Unit { get; set; }
         public double Price { get; set; }
     }
 }

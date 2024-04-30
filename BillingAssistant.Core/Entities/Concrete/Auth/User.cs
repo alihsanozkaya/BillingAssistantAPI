@@ -13,6 +13,7 @@ namespace BillingAssistant.Core.Entities.Concrete.Auth
         public string LastName { get; set; }
         public string Email { get; set; }
         public bool Verified { get; set; }
+        public bool IsPremium { get; set; }
         public byte[] PasswordSalt { get; set; }
         public byte[] PasswordHash { get; set; }
         public bool Status { get; set; }

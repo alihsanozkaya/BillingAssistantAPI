@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BillingAssistant.Entities",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BillingAssistant.API", "BillingAssistant.API\BillingAssistant.API.csproj", "{947785C9-22DB-4A5A-8E99-92AD5F53883F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillingAssistant.Ocr", "BillingAssistant.Ocr\BillingAssistant.Ocr.csproj", "{8E899FC4-A23D-412E-BBC8-CDCFC3056DD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BillingAssistant.Ocr", "BillingAssistant.Ocr\BillingAssistant.Ocr.csproj", "{8E899FC4-A23D-412E-BBC8-CDCFC3056DD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillingAssistant.Deneme", "BillingAssistant.Deneme\BillingAssistant.Deneme.csproj", "{A5F7E2DF-D10C-4EC5-8F87-28C04438E840}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{8E899FC4-A23D-412E-BBC8-CDCFC3056DD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E899FC4-A23D-412E-BBC8-CDCFC3056DD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E899FC4-A23D-412E-BBC8-CDCFC3056DD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5F7E2DF-D10C-4EC5-8F87-28C04438E840}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5F7E2DF-D10C-4EC5-8F87-28C04438E840}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5F7E2DF-D10C-4EC5-8F87-28C04438E840}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5F7E2DF-D10C-4EC5-8F87-28C04438E840}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

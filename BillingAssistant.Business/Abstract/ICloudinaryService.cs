@@ -11,7 +11,6 @@ namespace BillingAssistant.Business.Abstract
     public interface ICloudinaryService
     {
         Task<string> UploadImageAsync(string imagePath);
-
         Task<UploadResult> UploadOrderImageAsync(IFormFile file);
     }
 }

@@ -13,7 +13,8 @@ class Program
         List<string> lines = new List<string>();
         List<Product> products = new List<Product>(); 
 
-        string file = @"C:\Users\alihs\Desktop\KTÜN\KTÜN 4.Sınıf\Güz\Bitirme Projesi\OrnekFaturalar\ornekfatura2.pdf";
+        string file = @"C:\Users\alihs\Desktop\KTÜN\KTÜN 4.Sınıf\Güz\Bitirme Projesi\OrnekFaturalar\ornekfatura1.pdf";
+
         using (PdfReader reader = new PdfReader(file))
         {
             for (int pageNo = 1; pageNo <= reader.NumberOfPages; pageNo++)

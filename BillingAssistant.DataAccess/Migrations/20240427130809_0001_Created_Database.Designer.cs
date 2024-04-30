@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BillingAssistant.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240319095253_0001_Create_Database")]
-    partial class _0001_Create_Database
+    [Migration("20240427130809_0001_Created_Database")]
+    partial class _0001_Created_Database
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.14")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -83,6 +83,9 @@ namespace BillingAssistant.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.Property<bool?>("Gender")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsPremium")
                         .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
@@ -149,40 +152,7 @@ namespace BillingAssistant.DataAccess.Migrations
                     b.ToTable("UserOperationClaims");
                 });
 
-            modelBuilder.Entity("BillingAssistant.Entities.Concrete.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("CreatedBy")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("UpdatedBy")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("BillingAssistant.Entities.Concrete.Order", b =>
+            modelBuilder.Entity("BillingAssistant.Entities.Concrete.Invoice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -200,13 +170,7 @@ namespace BillingAssistant.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Quantity")
+                    b.Property<int>("StoreId")
                         .HasColumnType("integer");
 
                     b.Property<int?>("UpdatedBy")
@@ -220,11 +184,11 @@ namespace BillingAssistant.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("StoreId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Invoices");
                 });
 
             modelBuilder.Entity("BillingAssistant.Entities.Concrete.Product", b =>
@@ -235,23 +199,23 @@ namespace BillingAssistant.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("ProductName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("StoreId")
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("Unit")
                         .HasColumnType("integer");
 
                     b.Property<int?>("UpdatedBy")
@@ -262,9 +226,7 @@ namespace BillingAssistant.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("StoreId");
+                    b.HasIndex("InvoiceId");
 
                     b.ToTable("Products");
                 });
@@ -317,11 +279,11 @@ namespace BillingAssistant.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BillingAssistant.Entities.Concrete.Order", b =>
+            modelBuilder.Entity("BillingAssistant.Entities.Concrete.Invoice", b =>
                 {
-                    b.HasOne("BillingAssistant.Entities.Concrete.Product", "Product")
+                    b.HasOne("BillingAssistant.Entities.Concrete.Store", "Store")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -331,28 +293,20 @@ namespace BillingAssistant.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("Store");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("BillingAssistant.Entities.Concrete.Product", b =>
                 {
-                    b.HasOne("BillingAssistant.Entities.Concrete.Category", "Category")
+                    b.HasOne("BillingAssistant.Entities.Concrete.Invoice", "Invoice")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BillingAssistant.Entities.Concrete.Store", "Store")
-                        .WithMany()
-                        .HasForeignKey("StoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Store");
+                    b.Navigation("Invoice");
                 });
 #pragma warning restore 612, 618
         }

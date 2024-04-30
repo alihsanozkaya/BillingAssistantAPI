@@ -66,7 +66,7 @@ namespace BillingAssistant.WebAPI.Controllers
             var result = await _authService.Verification(userForVerifiedDto);
             if (result != null)
             {
-                return Ok(result);
+                return Ok(result.Data);
             }
             return BadRequest();
         }
@@ -88,6 +88,20 @@ namespace BillingAssistant.WebAPI.Controllers
             }
 
             return BadRequest(result.Message);
+        }
+
+
+        [HttpGet("getUserProfile")]
+
+        public async Task<IActionResult> GetUserProfile(int id)
+        {
+            var result = await _authService.GetUserProfile(id);
+
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
         }
     }
 }

@@ -11,11 +11,10 @@ namespace BillingAssistant.Entities.DTOs.ProductDtos
     public class ProductsDto : IDto
     {
         public int Id { get; set; }
-        public int CategoryId { get; set; }
-        public string CategoryName { get; set; }
-        public int StoreId { get; set; }
-        public string StoreName { get; set; }
-        public string ProductName { get; set; }
+        public int InvoiceId { get; set; }
+        public virtual Invoice Invoice { get; set; }
+        public string Name { get; set; }
+        public int Unit { get; set; }
         public double Price { get; set; }
     }
 }

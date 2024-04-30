@@ -13,6 +13,7 @@ namespace BillingAssistant.Business.Abstract
     public interface IProductService
     {
         Task<IResult> AddAsync(ProductAddDto entity);
+        Task<IResult> AddProductFromOCR(string filePath);
         Task<IDataResult<IEnumerable<ProductsDto>>> GetListAsync(Expression<Func<Product, bool>> filter = null);
         Task<IDataResult<ProductsDto>> GetAsync(Expression<Func<Product, bool>> filter);
         Task<IDataResult<ProductsDto>> GetByIdAsync(int id);

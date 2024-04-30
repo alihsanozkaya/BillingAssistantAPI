@@ -173,5 +173,18 @@ namespace BillingAssistant.Business.Concrete
 
             return new SuccessDataResult<UserForVerifiedDto>(resultDto, Messages.VerificationStatusRetrieved);
         }
+
+        public async Task<IDataResult<UserDto>> GetUserProfile(int id)
+        {
+            var user = await _userRepository.GetAsync(x => x.Id == id);
+            if (user != null)
+            {
+                var UsersDto = _mapper.Map<UserDto>(user);
+                return new SuccessDataResult<UserDto>(UsersDto, Messages.Listed);
+            }
+            return new ErrorDataResult<UserDto>(null, Messages.NotListed);
+        }
+
+      
     }
 }

@@ -14,7 +14,6 @@ namespace BillingAssistant.API.Controllers
         {
             _cloudinaryService = cloudinaryService;
             _ocrService = ocrService;
-
         }
         [HttpPost]
         [Route("[action]")]
