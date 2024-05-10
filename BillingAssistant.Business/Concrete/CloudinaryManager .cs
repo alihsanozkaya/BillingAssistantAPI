@@ -26,7 +26,6 @@ namespace BillingAssistant.Business.Concrete
 
             _cloudinary = new Cloudinary(account);
         }
-
         public async Task<string> UploadImageAsync(string imagePath)
         {
             var uploadParams = new ImageUploadParams
@@ -38,12 +37,12 @@ namespace BillingAssistant.Business.Concrete
 
             return uploadResult.SecureUri.ToString();
         }
-
         public async Task<UploadResult> UploadOrderImageAsync(IFormFile file)
         {
             if (file.Length <= 0)
+            {
                 return null;
-
+            }
             using (var stream = file.OpenReadStream())
             {
                 var uploadParams = new ImageUploadParams
@@ -51,7 +50,6 @@ namespace BillingAssistant.Business.Concrete
                     File = new FileDescription(file.FileName, stream),
                     Transformation = new Transformation().Crop("fill").Width(496).Height(711)
                 };
-
                 var uploadResult = await _cloudinary.UploadAsync(uploadParams);
                 return uploadResult;
             }

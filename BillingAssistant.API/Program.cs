@@ -95,16 +95,9 @@ builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddControllers();
 
-
-
-
+builder.Services.AddHttpClient();
 
 //builder.Services.AddDependencies(builder.Configuration);
-
-
-
-
-
 
 builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder =>

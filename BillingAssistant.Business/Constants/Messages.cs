@@ -41,5 +41,8 @@ namespace BillingAssistant.Business.Constants
 
         public static string PremiumMembershipActivated = "Premium Üyelik aktif edildi";
         public static string PremiumMembershipNotActivated = "Premium Üyelik aktif edilemedi";
+
+        public static string OCRParsingFailed = "OCR parsing hatası";
+        public static string InvoicesAddedSuccessfully = "Faturalar başarıyla eklendi";
     }
 }

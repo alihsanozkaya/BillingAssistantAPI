@@ -5,17 +5,9 @@ using BillingAssistant.Core.Utilities.Results;
 using BillingAssistant.DataAccess.Abstract;
 using BillingAssistant.Entities.Concrete;
 using BillingAssistant.Entities.DTOs.InvoiceDtos;
-using BillingAssistant.Entities.DTOs.ProductDtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Tesseract;
 
 namespace BillingAssistant.Business.Concrete;
-
 public class InvoiceManager : IInvoiceService
 {
     IInvoiceRepository _invoiceRepository;
@@ -25,11 +17,11 @@ public class InvoiceManager : IInvoiceService
         _invoiceRepository = invoiceRepository;
         _mapper = mapper;
     }
-    public async Task<IResult> AddAsync(InvoiceAddDto entity)
+    public async Task<IDataResult<Invoice>> AddAsync(InvoiceAddDto entity)
     {
         var newInvoice = _mapper.Map<Invoice>(entity);
         await _invoiceRepository.AddAsync(newInvoice);
-        return new SuccessResult(Messages.Added);
+        return new SuccessDataResult<Invoice>(newInvoice, Messages.Added);
     }
     public async Task<IDataResult<bool>> DeleteAsync(int id)
     {

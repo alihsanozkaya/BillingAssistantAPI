@@ -1,6 +1,7 @@
 ﻿using BillingAssistant.Core.Utilities.Results;
 using BillingAssistant.Entities.Concrete;
 using BillingAssistant.Entities.DTOs.ProductDtos;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace BillingAssistant.Business.Abstract
     public interface IProductService
     {
         Task<IResult> AddAsync(ProductAddDto entity);
-        Task<IResult> AddProductFromOCR(string filePath);
+        Task<IResult> AddProductFromOCR(IFormFile file);
         Task<IDataResult<IEnumerable<ProductsDto>>> GetListAsync(Expression<Func<Product, bool>> filter = null);
         Task<IDataResult<ProductsDto>> GetAsync(Expression<Func<Product, bool>> filter);
         Task<IDataResult<ProductsDto>> GetByIdAsync(int id);

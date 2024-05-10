@@ -13,7 +13,7 @@ namespace BillingAssistant.Business.Abstract;
 
 public interface IInvoiceService
 {
-    Task<IResult> AddAsync(InvoiceAddDto entity);
+    Task<IDataResult<Invoice>> AddAsync(InvoiceAddDto entity);
     Task<IDataResult<IEnumerable<InvoicesDto>>> GetListAsync(Expression<Func<Invoice, bool>> filter = null);
     Task<IDataResult<InvoicesDto>> GetAsync(Expression<Func<Invoice, bool>> filter);
     Task<IDataResult<InvoicesDto>> GetByIdAsync(int id);

@@ -3,17 +3,12 @@ using BillingAssistant.Business.Abstract;
 using BillingAssistant.Business.Constants;
 using BillingAssistant.Core.Utilities.Results;
 using BillingAssistant.DataAccess.Abstract;
-using BillingAssistant.DataAccess.Concrete;
 using BillingAssistant.Entities.Concrete;
 using BillingAssistant.Entities.DTOs.InvoiceDtos;
-using BillingAssistant.Entities.DTOs.OrderDtos;
 using BillingAssistant.Entities.DTOs.ProductDtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.AspNetCore.Http;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http.Json;
 using Tesseract;
 
 namespace BillingAssistant.Business.Concrete
@@ -21,11 +16,13 @@ namespace BillingAssistant.Business.Concrete
     public class ProductManager : IProductService
     {
         IProductRepository _productRepository;
+        IInvoiceRepository _invoiceRepository;
         IMapper _mapper;
-        public ProductManager(IProductRepository productRepository, IMapper mapper)
+        public ProductManager(IProductRepository productRepository, IMapper mapper, IInvoiceRepository invoiceRepository)
         {
             _productRepository = productRepository;
             _mapper = mapper;
+            _invoiceRepository = invoiceRepository;
         }
         public async Task<IResult> AddAsync(ProductAddDto entity)
         {
@@ -33,27 +30,31 @@ namespace BillingAssistant.Business.Concrete
             await _productRepository.AddAsync(newProduct);
             return new SuccessResult(Messages.Added);
         }
-        public async Task<IResult> AddProductFromOCR(string filePath)
+        public async Task<IResult> AddProductFromOCR(IFormFile file)
         {
             List<string> lines = new List<string>();
             List<Product> products = new List<Product>();
-
             string tessdataPath = @"C:\Users\alihs\.nuget\packages\tesseract\5.2.0\";
 
             using (var engine = new TesseractEngine(tessdataPath, "tur", EngineMode.Default))
             {
-                using (var img = Pix.LoadFromFile(filePath))
+                using (var memoryStream = new MemoryStream())
                 {
-                    using (var page = engine.Process(img))
+                    await file.CopyToAsync(memoryStream);
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    using (var img = Pix.LoadFromMemory(memoryStream.ToArray()))
                     {
-                        string text = page.GetText();
-                        text = text.Replace("TL", "");
-                        string[] textLines = text.Split('\n');
-                        foreach (string line in textLines)
+                        using (var page = engine.Process(img))
                         {
-                            if (!string.IsNullOrWhiteSpace(line))
+                            string text = page.GetText();
+                            text = text.Replace("TL", "");
+                            string[] textLines = text.Split('\n');
+                            foreach (string line in textLines)
                             {
-                                lines.Add(line.Trim());
+                                if (!string.IsNullOrWhiteSpace(line))
+                                {
+                                    lines.Add(line.Trim());
+                                }
                             }
                         }
                     }
@@ -63,7 +64,6 @@ namespace BillingAssistant.Business.Concrete
             {
                 Console.WriteLine("lines[{0}]: {1}", i, lines[i]);
             }
-            // OCR'den alınan verileri işleme ve veritabanına kaydetme
             int startIndex = lines.IndexOf("ÜRÜN AÇIKLAMASI") + 1;
             int endIndex = lines.IndexOf("ÖDEME BİLGİSİ");
             int startIndex2 = lines.IndexOf("ADET FİYAT TOPLAM") + 1;
@@ -90,13 +90,11 @@ namespace BillingAssistant.Business.Concrete
                     addTasks.Add(AddAsync(productAddDto));
                     startIndex2++;
                 }
-                return new SuccessResult("Faturalar başarıyla eklendi.");
+                return new SuccessResult(Messages.InvoicesAddedSuccessfully);
             }
             else
             {
-                // OCR parsing failed
-                Console.WriteLine("OCR parsing hatası.");
-                return new ErrorResult("OCR parsing hatası.");
+                return new ErrorResult(Messages.OCRParsingFailed);
             }
         }
         public async Task<IDataResult<bool>> DeleteAsync(int id)

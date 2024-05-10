@@ -17,15 +17,19 @@ namespace BillingAssistant.WebAPI.Controllers
         }
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> AddProductFromOCR(string file)
+        public async Task<IActionResult> AddProductFromOCR(IFormFile file)
         {
             if (file == null || file.Length <= 0)
             {
                 return BadRequest("File is empty");
             }
-
+    
             var result = await _productService.AddProductFromOCR(file);
-            return BadRequest(result.Message);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
         [HttpGet]
         [Route("[action]")]

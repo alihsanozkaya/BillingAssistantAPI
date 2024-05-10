@@ -17,6 +17,17 @@ namespace BillingAssistant.WebAPI.Controllers
         {
             _invoiceService = invoiceService;
         }
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> CreateInvoice(InvoiceAddDto invoiceAddDto)
+        {
+            var result = await _invoiceService.AddAsync(invoiceAddDto);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> GetInvoices()
@@ -33,17 +44,6 @@ namespace BillingAssistant.WebAPI.Controllers
         public async Task<IActionResult> GetInvoiceById(int invoiceId)
         {
             var result = await _invoiceService.GetByIdAsync(invoiceId);
-            if (result != null)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
-        }
-        [HttpPost]
-        [Route("[action]")]
-        public async Task<IActionResult> CreateInvoice(InvoiceAddDto invoiceAddDto)
-        {
-            var result = await _invoiceService.AddAsync(invoiceAddDto);
             if (result != null)
             {
                 return Ok(result);

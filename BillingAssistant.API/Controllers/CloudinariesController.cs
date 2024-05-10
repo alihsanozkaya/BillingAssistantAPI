@@ -9,18 +9,19 @@ namespace BillingAssistant.API.Controllers
     public class CloudinariesController : ControllerBase
     {
         ICloudinaryService _cloudinaryService;
-        IOcrService _ocrService;
-        public CloudinariesController(ICloudinaryService cloudinaryService,IOcrService ocrService)
+        public CloudinariesController(ICloudinaryService cloudinaryService)
         {
             _cloudinaryService = cloudinaryService;
-            _ocrService = ocrService;
         }
         [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> AddImage(IFormFile file)
         {
+            if (file == null || file.Length <= 0)
+            {
+                return BadRequest("File is empty");
+            }
             var result = await _cloudinaryService.UploadOrderImageAsync(file);
-            //await _ocrService.ReadOcr(file);
             if (result != null)
             {
                 return Ok(result);
