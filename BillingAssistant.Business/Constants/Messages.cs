@@ -44,5 +44,8 @@ namespace BillingAssistant.Business.Constants
 
         public static string OCRParsingFailed = "OCR parsing hatası";
         public static string InvoicesAddedSuccessfully = "Faturalar başarıyla eklendi";
+
+        public static string FileIsEmpty = "Dosya boş";
+        public static string InvoiceAlreadyExists = "Fatura Zaten Mevcut";
     }
 }

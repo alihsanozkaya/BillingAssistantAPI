@@ -1,4 +1,5 @@
 ﻿using BillingAssistant.Business.Abstract;
+using BillingAssistant.Business.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ namespace BillingAssistant.API.Controllers
         {
             if (file == null || file.Length <= 0)
             {
-                return BadRequest("File is empty");
+                return BadRequest(Messages.FileIsEmpty);
             }
             var result = await _cloudinaryService.UploadOrderImageAsync(file);
             if (result != null)

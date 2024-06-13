@@ -10,5 +10,6 @@ namespace BillingAssistant.DataAccess.Abstract
 {
     public interface IProductRepository : IBaseRepository<Product>
     {
+        Task<List<Product>> GetProductsByUserIdAsync(int userId);
     }
 }

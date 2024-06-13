@@ -23,7 +23,7 @@ namespace BillingAssistant.WebAPI.Controllers
         {
             var result = await _invoiceService.AddAsync(invoiceAddDto);
             if (result.Success)
-            {
+            {               
                 return Ok(result);
             }
             return BadRequest();
@@ -50,14 +50,14 @@ namespace BillingAssistant.WebAPI.Controllers
             }
             return BadRequest();
         }
-        [HttpDelete]
-        [Route("[action]/{invoiceId:int}")]
-        public async Task<IActionResult> DeleteInvoice(int invoiceId)
+        [HttpGet]
+        [Route("[action]/{userId:int}")]
+        public async Task<IActionResult> GetByUserId(int userId)
         {
-            var result = await _invoiceService.DeleteAsync(invoiceId);
-            if (result.Success)
+            var result = await _invoiceService.GetByUserIdAsync(userId);
+            if (result != null)
             {
-                return Ok(result.Message);
+                return Ok(result);
             }
             return BadRequest();
         }
@@ -69,6 +69,17 @@ namespace BillingAssistant.WebAPI.Controllers
             if (result != null)
             {
                 return Ok(result);
+            }
+            return BadRequest();
+        }
+        [HttpDelete]
+        [Route("[action]/{invoiceId:int}")]
+        public async Task<IActionResult> DeleteInvoice(int invoiceId)
+        {
+            var result = await _invoiceService.DeleteAsync(invoiceId);
+            if (result.Success)
+            {
+                return Ok(result.Message);
             }
             return BadRequest();
         }

@@ -50,26 +50,6 @@ namespace BillingAssistant.WebAPI.Controllers
             }
             return BadRequest(result.Message);
         }
-        [HttpPut("updateProfile")]
-        public async Task<IActionResult> UpdateProfile([FromBody] UserForUpdateProfileDto userForUpdateProfileDto)
-        {
-            var result = await _authService.UpdateProfile(userForUpdateProfileDto);
-            if (result != null)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
-        }
-        [HttpPut("verification")]
-        public async Task<IActionResult> Verification([FromBody] UserForVerifiedDto userForVerifiedDto)
-        {
-            var result = await _authService.Verification(userForVerifiedDto);
-            if (result != null)
-            {
-                return Ok(result.Data);
-            }
-            return BadRequest();
-        }
         [HttpGet("sendEmailAsync")]
         public async Task<IActionResult> SendEmailAsync(string email)
         {
@@ -89,10 +69,7 @@ namespace BillingAssistant.WebAPI.Controllers
 
             return BadRequest(result.Message);
         }
-
-
         [HttpGet("getUserProfile")]
-
         public async Task<IActionResult> GetUserProfile(int id)
         {
             var result = await _authService.GetUserProfile(id);
@@ -100,6 +77,26 @@ namespace BillingAssistant.WebAPI.Controllers
             if (result != null)
             {
                 return Ok(result);
+            }
+            return BadRequest();
+        }
+        [HttpPut("updateProfile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UserForUpdateProfileDto userForUpdateProfileDto)
+        {
+            var result = await _authService.UpdateProfile(userForUpdateProfileDto);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
+        [HttpPut("verification")]
+        public async Task<IActionResult> Verification([FromBody] UserForVerifiedDto userForVerifiedDto)
+        {
+            var result = await _authService.Verification(userForVerifiedDto);
+            if (result != null)
+            {
+                return Ok(result.Data);
             }
             return BadRequest();
         }

@@ -1,4 +1,5 @@
 ﻿using BillingAssistant.Business.Abstract;
+using BillingAssistant.Business.Constants;
 using BillingAssistant.Entities.DTOs.ProductDtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,19 +18,29 @@ namespace BillingAssistant.WebAPI.Controllers
         }
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> AddProductFromOCR(IFormFile file)
+        public async Task<IActionResult> AddProductFromOCR(IFormFile file, int invoiceId)
         {
             if (file == null || file.Length <= 0)
             {
-                return BadRequest("File is empty");
+                return BadRequest(Messages.FileIsEmpty);
             }
-    
-            var result = await _productService.AddProductFromOCR(file);
+            var result = await _productService.AddProductFromOCR(file, invoiceId);
             if (result != null)
             {
                 return Ok(result);
             }
             return BadRequest(result);
+        }
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> CreateProduct(ProductAddDto productAddDto)
+        {
+            var result = await _productService.AddAsync(productAddDto);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
         }
         [HttpGet]
         [Route("[action]")]
@@ -53,11 +64,33 @@ namespace BillingAssistant.WebAPI.Controllers
             }
             return BadRequest();
         }
-        [HttpPost]
-        [Route("[action]")]
-        public async Task<IActionResult> CreateProduct(ProductAddDto productAddDto)
+        [HttpGet]
+        [Route("[action]/{invoiceId:int}")]
+        public async Task<IActionResult> GetByInvoiceId(int invoiceId)
         {
-            var result = await _productService.AddAsync(productAddDto);
+            var result = await _productService.GetByInvoiceIdAsync(invoiceId);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
+        [HttpGet]
+        [Route("[action]/{userId:int}")]
+        public async Task<IActionResult> GetProductsByUserId(int userId)
+        {
+            var result = await _productService.GetProductsByUserIdAsync(userId);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
+        [HttpPut]
+        [Route("[action]")]
+        public async Task<IActionResult> UpdateProduct(ProductUpdateDto productUpdateDto)
+        {
+            var result = await _productService.UpdateAsync(productUpdateDto);
             if (result != null)
             {
                 return Ok(result);
@@ -72,17 +105,6 @@ namespace BillingAssistant.WebAPI.Controllers
             if (result.Success)
             {
                 return Ok(result.Message);
-            }
-            return BadRequest();
-        }
-        [HttpPut]
-        [Route("[action]")]
-        public async Task<IActionResult> UpdateProduct(ProductUpdateDto productUpdateDto)
-        {
-            var result = await _productService.UpdateAsync(productUpdateDto);
-            if (result != null)
-            {
-                return Ok(result);
             }
             return BadRequest();
         }

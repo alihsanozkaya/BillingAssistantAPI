@@ -14,6 +14,17 @@ namespace BillingAssistant.WebAPI.Controllers
         {
             _storeService = storeService;
         }
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> CreateStore(StoreAddDto storeAddDto)
+        {
+            var result = await _storeService.AddAsync(storeAddDto);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> GetStores()
@@ -36,11 +47,11 @@ namespace BillingAssistant.WebAPI.Controllers
             }
             return BadRequest();
         }
-        [HttpPost]
+        [HttpPut]
         [Route("[action]")]
-        public async Task<IActionResult> CreateStore(StoreAddDto storeAddDto)
+        public async Task<IActionResult> UpdateStore(StoreUpdateDto storeUpdateDto)
         {
-            var result = await _storeService.AddAsync(storeAddDto);
+            var result = await _storeService.UpdateAsync(storeUpdateDto);
             if (result != null)
             {
                 return Ok(result);
@@ -55,17 +66,6 @@ namespace BillingAssistant.WebAPI.Controllers
             if (result.Success)
             {
                 return Ok(result.Message);
-            }
-            return BadRequest();
-        }
-        [HttpPut]
-        [Route("[action]")]
-        public async Task<IActionResult> UpdateStore(StoreUpdateDto storeUpdateDto)
-        {
-            var result = await _storeService.UpdateAsync(storeUpdateDto);
-            if (result != null)
-            {
-                return Ok(result);
             }
             return BadRequest();
         }

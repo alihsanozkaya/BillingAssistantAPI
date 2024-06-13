@@ -1,29 +1,32 @@
 ﻿using System;
-using System.Drawing;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Tesseract;
 
 namespace BillingAssistant.Deneme
 {
     class Program
     {
-        static void Main(string[] args)
+        static async System.Threading.Tasks.Task Main(string[] args)
         {
             List<string> lines = new List<string>();
-            List<Product> products = new List<Product>();
 
-            string imagePath = @"C:\Users\alihs\Desktop\KTÜN\KTÜN 4.Sınıf\Güz\Bitirme Projesi\OrnekFaturalar\ornekfatura2.jpg"; // OCR yapılacak resmin yolu
+            // OCR yapılacak resmin yolu
+            string imagePath = @"C:\Users\alihs\Desktop\KTÜN\KTÜN 4.Sınıf\Güz\Bitirme Projesi\OrnekFaturalar\migros.jpg";
+
+            // Tesseract OCR motorunun dosya yolu (tessdata klasörü içeren yol)
             string tessdataPath = @"C:\Users\alihs\.nuget\packages\tesseract\5.2.0\";
 
-            using (var engine = new TesseractEngine(tessdataPath, "tur", EngineMode.Default)) // "tur" Türkçe için kullanılan dil kodudur.
+            // OCR motorunun başlatılması
+            using (var engine = new TesseractEngine(tessdataPath, "tur", EngineMode.Default))
             {
+                // OCR işlemi için resmin yüklenmesi ve işlenmesi
                 using (var img = Pix.LoadFromFile(imagePath))
                 {
                     using (var page = engine.Process(img))
                     {
                         string text = page.GetText();
-                        text = text.Replace("TL", "");
                         string[] textLines = text.Split('\n');
                         foreach (string line in textLines)
                         {
@@ -39,33 +42,66 @@ namespace BillingAssistant.Deneme
             {
                 Console.WriteLine("lines[{0}]: {1}", i, lines[i]);
             }
-            int startIndex = lines.IndexOf("ÜRÜN AÇIKLAMASI") + 1;
-            int endIndex = lines.IndexOf("ÖDEME BİLGİSİ");
-            int startIndex2 = lines.IndexOf("ADET FİYAT TOPLAM") + 1;
-
-            if (startIndex != -1 && endIndex != -1 && startIndex2 != -1)
+            // A101 tespit edildikten sonra TOPKDV'ye kadar olan kısmı almak
+            List<string> filteredLines = new List<string>();
+            bool foundA101 = false;
+            bool reachedEnd = false;
+            foreach (string line in lines)
             {
-                for (int i = startIndex; i < endIndex; i++)
+                if (line.Contains("A101") || line.Contains("FILE") || line.Contains("MIGROS"))
                 {
-                    string name = lines[i];
-                    string[] parts = lines[startIndex2].Split(' ');
-                    int unit = int.Parse(parts[0]);
-                    double price = double.Parse(parts[1]);
+                    foundA101 = true;
+                }
 
-                    Product product = new Product
+                if (foundA101)
+                {
+                    if (line.Contains("TOPKDV"))
                     {
-                        Name = name,
-                        Unit = unit,
-                        Price = price,
-                    };
-                    products.Add(product);
-                    startIndex2++;
+                        reachedEnd = true;
+                    }
+
+                    if (!reachedEnd)
+                    {
+                        filteredLines.Add(line);
+                    }
                 }
             }
-            // Ürünleri konsola yazdır
+
+            // İstenen satırların ürün adı ve fiyatını almak
+            List<Product> products = new List<Product>();
+            foreach (string line in filteredLines)
+            {
+                if (line.Contains("*"))
+                {
+                    string[] parts = line.Split('*');
+                    string productName = parts[0].Trim();
+
+                    // % işaretinden öncesini almak
+                    int percentIndex = productName.IndexOf('%');
+                    if (percentIndex != -1)
+                    {
+                        productName = productName.Substring(0, percentIndex).Trim();
+                    }
+
+                    string pricePart = parts[1].Trim();
+
+                    // Fiyat kısmının sonunda nokta (.) yerine virgül (,) kullanılmış olabilir, bunu dikkate alarak işlem yapalım
+                    pricePart = pricePart.Replace(".", ",");
+
+                    // Fiyat kısmını alıp boşlukları temizleyelim
+                    string priceString = new string(pricePart.Where(c => char.IsDigit(c) || c == ',').ToArray());
+                    double price = double.Parse(priceString);
+
+                    products.Add(new Product { Name = productName, Price = price });
+                }
+            }
+
+            // Sonuçların konsola yazdırılması
             foreach (var product in products)
             {
-                Console.WriteLine($"Ürün: {product.Name}, Miktar: {product.Unit}, Fiyat: {product.Price}");
+                Console.WriteLine("Product Name: " + product.Name);
+                Console.WriteLine("Price: " + product.Price);
+                Console.WriteLine();
             }
         }
     }

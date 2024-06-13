@@ -14,6 +14,17 @@ namespace BillingAssistant.WebAPI.Controllers
         {
             _orderService = orderService;
         }
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> CreateOrder([FromBody] OrderAddDto orderAddDto)
+        {
+            var result = await _orderService.AddAsync(orderAddDto);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> GetOrders()
@@ -36,11 +47,11 @@ namespace BillingAssistant.WebAPI.Controllers
             }
             return BadRequest();
         }
-        [HttpPost]
+        [HttpPut]
         [Route("[action]")]
-        public async Task<IActionResult> CreateOrder([FromBody] OrderAddDto orderAddDto)
+        public async Task<IActionResult> UpdateOrder(OrderUpdateDto orderUpdateDto)
         {
-            var result = await _orderService.AddAsync(orderAddDto);
+            var result = await _orderService.UpdateAsync(orderUpdateDto);
             if (result != null)
             {
                 return Ok(result);
@@ -55,17 +66,6 @@ namespace BillingAssistant.WebAPI.Controllers
             if (result.Success)
             {
                 return Ok(result.Message);
-            }
-            return BadRequest();
-        }
-        [HttpPut]
-        [Route("[action]")]
-        public async Task<IActionResult> UpdateOrder(OrderUpdateDto orderUpdateDto)
-        {
-            var result = await _orderService.UpdateAsync(orderUpdateDto);
-            if (result != null)
-            {
-                return Ok(result);
             }
             return BadRequest();
         }

@@ -16,6 +16,17 @@ namespace BillingAssistant.WebAPI.Controllers
         {
             _categoryService = categoryService;
         }
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> CreateCategory(CategoryAddDto categoryAddDto)
+        {
+            var result = await _categoryService.AddAsync(categoryAddDto);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> GetCategories()
@@ -38,11 +49,11 @@ namespace BillingAssistant.WebAPI.Controllers
             }
             return BadRequest();
         }
-        [HttpPost]
+        [HttpPut]
         [Route("[action]")]
-        public async Task<IActionResult> CreateCategory(CategoryAddDto categoryAddDto)
+        public async Task<IActionResult> UpdateCategory(CategoryUpdateDto categoryUpdateDto)
         {
-            var result = await _categoryService.AddAsync(categoryAddDto);
+            var result = await _categoryService.UpdateAsync(categoryUpdateDto);
             if (result != null)
             {
                 return Ok(result);
@@ -57,17 +68,6 @@ namespace BillingAssistant.WebAPI.Controllers
             if (result.Success)
             {
                 return Ok(result.Message);
-            }
-            return BadRequest();
-        }
-        [HttpPut]
-        [Route("[action]")]
-        public async Task<IActionResult> UpdateCategory(CategoryUpdateDto categoryUpdateDto)
-        {
-            var result = await _categoryService.UpdateAsync(categoryUpdateDto);
-            if (result != null)
-            {
-                return Ok(result);
             }
             return BadRequest();
         }

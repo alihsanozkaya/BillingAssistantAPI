@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BillingAssistant.Deneme
+namespace BillingAssistant.Entities.DTOs.ProductDtos
 {
-    public class Product
+    public class ProductsByUserDto
     {
+        public int Id { get; set; }
+        public int InvoiceId { get; set; }
         public string Name { get; set; }
-        public int Unit { get; set; } = 1;
+        public int Unit { get; set; }
         public double Price { get; set; }
     }
 }

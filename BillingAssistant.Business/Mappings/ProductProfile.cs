@@ -19,6 +19,8 @@ namespace BillingAssistant.Business.Mappings
             CreateMap<ProductAddDto, Product>().ReverseMap();
             CreateMap<ProductUpdateDto, Product>();
             CreateMap<ProductUpdateDto, Product>().ReverseMap();
+            CreateMap<ProductsByUserDto, Product>();
+            CreateMap<ProductsByUserDto, Product>().ReverseMap();
         }
     }
 }

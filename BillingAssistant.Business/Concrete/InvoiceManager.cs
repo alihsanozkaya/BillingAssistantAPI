@@ -3,8 +3,10 @@ using BillingAssistant.Business.Abstract;
 using BillingAssistant.Business.Constants;
 using BillingAssistant.Core.Utilities.Results;
 using BillingAssistant.DataAccess.Abstract;
+using BillingAssistant.DataAccess.Concrete;
 using BillingAssistant.Entities.Concrete;
 using BillingAssistant.Entities.DTOs.InvoiceDtos;
+using BillingAssistant.Entities.DTOs.ProductDtos;
 using System.Linq.Expressions;
 
 namespace BillingAssistant.Business.Concrete;
@@ -47,6 +49,16 @@ public class InvoiceManager : IInvoiceService
             return new SuccessDataResult<InvoicesDto>(invoiceDto, Messages.Listed);
         }
         return new ErrorDataResult<InvoicesDto>(null, Messages.NotListed);
+    }
+    public async Task<IDataResult<List<InvoicesDto>>> GetByUserIdAsync(int userId)
+    {
+        var invoices = await _invoiceRepository.GetListAsync(x => x.UserId == userId);
+        if (invoices?.Any() == true)
+        {
+            var invoiceDtos = _mapper.Map<List<InvoicesDto>>(invoices);
+            return new SuccessDataResult<List<InvoicesDto>>(invoiceDtos, Messages.Listed);
+        }
+        return new ErrorDataResult<List<InvoicesDto>>(null, Messages.NotListed);
     }
     public async Task<IDataResult<IEnumerable<InvoicesDto>>> GetListAsync(Expression<Func<Invoice, bool>> filter = null)
     {

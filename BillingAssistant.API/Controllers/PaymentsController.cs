@@ -10,17 +10,13 @@ namespace BillingAssistant.API.Controllers
     public class PaymentsController : ControllerBase
     {
         IPaymentService _paymentService;
-
         public PaymentsController(IPaymentService paymentService)
         {
             _paymentService = paymentService;
         }
-
         [HttpPost]
         public async Task<IActionResult> MakePayment(int totalAmount)
         {
-
-
             try
             {
                 var clientSecret = await _paymentService.CreatePaymentIntentAsync(totalAmount);
@@ -30,7 +26,6 @@ namespace BillingAssistant.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
         }
     }
 }
